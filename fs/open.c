@@ -370,8 +370,6 @@ retry:
 		 * with the "noexec" flag.
 		 */
 		res = -EACCES;
-		if (path_noexec(&path))
-			goto out_path_release;
 	}
 
 	res = inode_permission2(mnt, inode, mode | MAY_ACCESS);

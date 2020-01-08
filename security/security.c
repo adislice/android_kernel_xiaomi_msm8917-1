@@ -760,18 +760,6 @@ static inline unsigned long mmap_prot(struct file *file, unsigned long prot)
 	 * ditto if it's not on noexec mount, except that on !MMU we need
 	 * BDI_CAP_EXEC_MMAP (== VM_MAYEXEC) in this case
 	 */
-	if (!path_noexec(&file->f_path)) {
-#ifndef CONFIG_MMU
-		unsigned long caps = 0;
-		struct address_space *mapping = file->f_mapping;
-		if (mapping && mapping->backing_dev_info)
-			caps = mapping->backing_dev_info->capabilities;
-		if (!(caps & BDI_CAP_EXEC_MAP))
-			return prot;
-#endif
-		return prot | PROT_EXEC;
-	}
-	/* anything on noexec mount won't get PROT_EXEC */
 	return prot;
 }
 
